@@ -11,9 +11,9 @@ FROM alpine
 
 LABEL maintainer="HomeAll"
 
-RUN adduser -S cloudflared
-apk add --no-cache ca-certificates bind-tools libcap
-rm -rf /var/cache/apk/*
+RUN adduser -S cloudflared; \
+    apk add --no-cache ca-certificates bind-tools libcap; \
+    rm -rf /var/cache/apk/*;
 
 COPY config.yml /home/cloudflared/
 
