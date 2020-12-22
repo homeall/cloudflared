@@ -1,7 +1,7 @@
 FROM golang:alpine as gobuild
 
-RUN apk add --no-cache git gcc build-base
-go get -v github.com/cloudflare/cloudflared/cmd/cloudflared
+RUN apk add --no-cache git gcc build-base; \
+    go get -v github.com/cloudflare/cloudflared/cmd/cloudflared
 
 WORKDIR /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared
 
