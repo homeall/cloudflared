@@ -19,7 +19,7 @@ COPY --from=gobuild /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared/cl
 
 RUN setcap CAP_NET_BIND_SERVICE+eip /usr/local/bin/cloudflared
 
-HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD nslookup -po=${PORT} cloudflare.com 127.0.0.1 || exit 1
+HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD nslookup -po=54 cloudflare.com 127.0.0.1 || exit 1
 
 ADD https://raw.githubusercontent.com/homeall/dockerfile-cloudflared-k8s/main/config.yml /home/cloudflared/
 
