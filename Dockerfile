@@ -33,10 +33,10 @@ EXPOSE ${PORT:-54}/tcp
 
 USER cloudflared
 
-ENTRYPOINT ["/usr/local/bin/cloudflared proxy-dns" \
+CMD         "/usr/local/bin/cloudflared proxy-dns" \
             " --address ${ADDRESS} --port ${PORT:-54}" \
             "--metrics ${METRICS}" \
             "--upstream https://${DN1:-1.1.1.3}/dns-query" \
             "--upstream https://${DN2:-security.cloudflare-dns.com}/dns-query" \
-            "--upstream https://1.1.1.2/dns-query" 
-            "--upstream https://1.0.0.2/dns-query"]
+            "--upstream https://1.1.1.2/dns-query" \
+            "--upstream https://1.0.0.2/dns-query"
