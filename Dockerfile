@@ -11,6 +11,12 @@ FROM alpine
 
 LABEL maintainer="HomeAll"
 
+ENV DN1=""
+ENV DN2=""
+ENV PORT=""
+ENV ADDRESS=0.0.0.0
+ENV METRICS=127.0.0.1:8080
+
 RUN adduser -S cloudflared; \
     apk add --no-cache ca-certificates bind-tools libcap; \
     rm -rf /var/cache/apk/*;
@@ -19,12 +25,18 @@ COPY --from=gobuild /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared/cl
 
 RUN setcap CAP_NET_BIND_SERVICE+eip /usr/local/bin/cloudflared
 
-HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD nslookup -po=54 cloudflare.com 127.0.0.1 || exit 1
+HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD nslookup -po=${PORT:-54} cloudflare.com 127.0.0.1 || exit 1
 
-ADD https://raw.githubusercontent.com/homeall/dockerfile-cloudflared-k8s/main/config.yml /home/cloudflared/
+EXPOSE ${PORT:-54}/udp
 
-RUN chown cloudflared /home/cloudflared/config.yml
+EXPOSE ${PORT:-54}/tcp
 
 USER cloudflared
 
-CMD ["/bin/sh", "-c", "/usr/local/bin/cloudflared --config /home/cloudflared/config.yml --metrics 127.0.0.1:8080 --no-autoupdate --loglevel error"]
+ENTRYPOINT ["/usr/local/bin/cloudflared proxy-dns" \
+            " --address ${ADDRESS} --port ${PORT:-54}" \
+            "--metrics ${METRICS}" \
+            "--upstream https://${DN1:-1.1.1.3}/dns-query" \
+            "--upstream https://${DN2:-security.cloudflare-dns.com}/dns-query" \
+            "--upstream https://1.1.1.2/dns-query" 
+            "--upstream https://1.0.0.2/dns-query"]
