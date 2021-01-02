@@ -3,7 +3,7 @@
 
 # Docker image with [cloudflared](https://github.com/cloudflare/cloudflared) for *DNS over HTTPS*
 
-It is useful for setting up together with [PiHole](https://hub.docker.com/r/pihole/pihole).
+It is useful for setting up together with [PiHole](https://github.com/pi-hole/pi-hole).
 
 ### Default Settings
 
@@ -14,6 +14,8 @@ It will come with the following upstreams *in this order*:
 4. 1.0.0.2
 
 The default port is **54**.
+
+Addres is *0.0.0.0*
 
 ### Docker run command: 
 
@@ -119,4 +121,4 @@ Distributed under the MIT license. See `LICENSE` for more information.
 
 * [@Cloudflared](https://github.com/cloudflare/cloudflared)
 
-* [@PiHole](https://pi-hole.net)
+* [@PiHole](https://github.com/pi-hole/pi-hole)
