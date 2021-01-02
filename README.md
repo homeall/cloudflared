@@ -17,7 +17,7 @@ The default port is **54**.
 
 ### Docker run command: 
 
-```docker run -d --name cloudflare -p "54:54" homeall/cloudflared:latest```
+```docker run -d --name cloudflare -p "54:54" -p "54:54/udp" homeall/cloudflared:latest```
 
 ```INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.1.1.3/dns-query
 INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://security.cloudflare-dns.com/dns-query
@@ -26,13 +26,21 @@ INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
 INFO[2021-01-01T20:03:37Z] Starting metrics server on 127.0.0.1:8080/metrics
 INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.0:54
 ```
+Simple tests:
+
+```❯ dig google.com @127.0.0.1 -p 54 +short
+216.58.211.174
+❯ dig google.com @127.0.0.1 +tcp -p 54 +short
+216.58.211.174
+```
+
 ### Custom upstreams and custom port number:  
 
 You can run change first two upstreams **DNS1** and **DNS2** and *port number*.
 
 You can run:
 
-```docker run -d --name cloudflared -p "5353:5353" -e "DNS1=8.8.8.8" -e "DNS2=1.1.1.1" -e "PORT=5353" homeall/cloudflared:latest```
+```docker run -d --name cloudflared -p "5353:5353" -p "5353:5353/udp" -e "DNS1=8.8.8.8" -e "DNS2=1.1.1.1" -e "PORT=5353" homeall/cloudflared:latest```
 
 Output:
 
@@ -42,6 +50,27 @@ INFO[2021-01-01T20:08:36Z] Adding DNS upstream - url: https://1.1.1.1/dns-query
 INFO[2021-01-01T20:08:36Z] Adding DNS upstream - url: https://1.1.1.2/dns-query
 INFO[2021-01-01T20:08:36Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
 INFO[2021-01-01T20:08:36Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.0:5353
+```
+
+### Dualstack Ipv4/IPv6
+
+`docker run --name cloudflared -d -p "54:54" -p "54:54/udp" -e "ADDRESS=::" homeall/cloudflared`
+
+Simple tests:
+
+```INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.1.1.3/dns-query
+INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://security.cloudflare-dns.com/dns-query
+INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.1.1.2/dns-query
+INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
+INFO[2021-01-02T14:38:53Z] Starting metrics server on 127.0.0.1:8080/metrics
+INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:54
+```
+
+```
+❯ dig google.com @::1 +tcp -p 54 +short
+216.58.213.14
+❯ dig google.com @::1 -p 54 +short
+216.58.213.14
 ```
 
 ## Set up together with [PiHole](https://hub.docker.com/r/pihole/pihole)
