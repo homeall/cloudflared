@@ -31,7 +31,8 @@ INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 ```
 Simple tests:
 
-```❯ dig google.com @127.0.0.1 -p 54 +short
+```
+❯ dig google.com @127.0.0.1 -p 54 +short
 216.58.211.174
 ❯ dig google.com @127.0.0.1 +tcp -p 54 +short
 216.58.211.174
@@ -62,7 +63,8 @@ INFO[2021-01-01T20:08:36Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 
 Output result:
 
-```INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.1.1.3/dns-query
+```
+INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.1.1.3/dns-query
 INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://security.cloudflare-dns.com/dns-query
 INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.1.1.2/dns-query
 INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
