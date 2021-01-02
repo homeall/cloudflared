@@ -82,4 +82,4 @@ services:
  
  ### Licence
 
-Distributed under the MIT license
+Distributed under the MIT license. See `LICENSE` for more information.
