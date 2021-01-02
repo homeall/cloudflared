@@ -1,3 +1,5 @@
+[![cloudflared](https://github.com/homeall/cloudflared/workflows/CI/badge.svg)](https://github.com/homeall/cloudflared/actions)
+
 # Docker image with [cloudflared](https://github.com/cloudflare/cloudflared) for *DNS over HTTPS*
 
 It is useful for setting up together with [PiHole](https://hub.docker.com/r/pihole/pihole).
