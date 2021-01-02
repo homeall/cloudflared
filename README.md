@@ -1,12 +1,8 @@
-[![cloudflared](https://github.com/homeall/cloudflared/workflows/CI/badge.svg)](https://github.com/homeall/cloudflared/actions)
+[![cloudflared](https://github.com/homeall/cloudflared/workflows/CI/badge.svg)](https://github.com/homeall/cloudflared/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Docker image with [cloudflared](https://github.com/cloudflare/cloudflared) for *DNS over HTTPS*
 
 It is useful for setting up together with [PiHole](https://hub.docker.com/r/pihole/pihole).
-
-Docker command: 
-
-```docker run -d --name cloudflare -p "54:54" homeall/cloudflared:latest```
 
 ### Default Settings
 
@@ -18,6 +14,10 @@ It will come with the following upstreams *in this order*:
 
 The default port is **54**.
 
+### Docker run command: 
+
+```docker run -d --name cloudflare -p "54:54" homeall/cloudflared:latest```
+
 ```INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.1.1.3/dns-query
 INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://security.cloudflare-dns.com/dns-query
 INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.1.1.2/dns-query
@@ -25,6 +25,7 @@ INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
 INFO[2021-01-01T20:03:37Z] Starting metrics server on 127.0.0.1:8080/metrics
 INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.0:54
 ```
+### Custom upstreams and custom port number:  
 
 You can run change first two upstreams **DNS1** and **DNS2** and *port number*.
 
@@ -76,3 +77,7 @@ services:
     ports:
       - "54:54/tcp"
       - "54:54/udp"
+ 
+ ## Licence
+
+Distributed under the MIT license
