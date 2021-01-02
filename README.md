@@ -83,3 +83,7 @@ services:
  ### Licence
 
 Distributed under the MIT license. See `LICENSE` for more information.
+
+## Acknowledgements
+• [@Visibilityspots](https://github.com/visibilityspots/dockerfile-cloudflared)
+• [@Cloudflared](https://github.com/cloudflare/cloudflared)
