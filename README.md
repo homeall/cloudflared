@@ -21,7 +21,8 @@ Addres is *0.0.0.0*
 
 ```docker run -d --name cloudflare -p "54:54" -p "54:54/udp" homeall/cloudflared:latest```
 
-```INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.1.1.3/dns-query
+```
+INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.1.1.3/dns-query
 INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://security.cloudflare-dns.com/dns-query
 INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.1.1.2/dns-query
 INFO[2021-01-01T20:03:37Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
@@ -44,9 +45,10 @@ You can run:
 
 ```docker run -d --name cloudflared -p "5353:5353" -p "5353:5353/udp" -e "DNS1=8.8.8.8" -e "DNS2=1.1.1.1" -e "PORT=5353" homeall/cloudflared:latest```
 
-Output:
+Output result:
 
-```INFO[2021-01-01T20:08:36Z] Starting metrics server on 127.0.0.1:8080/metrics
+```
+INFO[2021-01-01T20:08:36Z] Starting metrics server on 127.0.0.1:8080/metrics
 INFO[2021-01-01T20:08:36Z] Adding DNS upstream - url: https://8.8.8.8/dns-query
 INFO[2021-01-01T20:08:36Z] Adding DNS upstream - url: https://1.1.1.1/dns-query
 INFO[2021-01-01T20:08:36Z] Adding DNS upstream - url: https://1.1.1.2/dns-query
@@ -58,7 +60,7 @@ INFO[2021-01-01T20:08:36Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 
 `docker run --name cloudflared -d -p "54:54" -p "54:54/udp" -e "ADDRESS=::" homeall/cloudflared`
 
-Simple tests:
+Output result:
 
 ```INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.1.1.3/dns-query
 INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://security.cloudflare-dns.com/dns-query
@@ -67,6 +69,7 @@ INFO[2021-01-02T14:38:53Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
 INFO[2021-01-02T14:38:53Z] Starting metrics server on 127.0.0.1:8080/metrics
 INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:54
 ```
+Simple tests:
 
 ```
 ❯ dig google.com @::1 +tcp -p 54 +short
