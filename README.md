@@ -33,20 +33,39 @@
   </ol>
 </details>
 
+## About The Project
 
 It is useful for setting up together with [PiHole](https://github.com/pi-hole/pi-hole).
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Prerequisites
+
+You will need to have:
+
+* :whale: [Docker](https://docs.docker.com/engine/install/)
+* :whale2: [docker-compose](https://docs.docker.com/compose/) 
+ >This step is optional
+
+:arrow_up: [Go on TOP](#about-the-project) :point_up:
+
+<!-- USAGE -->
+## Usage
 
 ### Default Settings
 
-It will come with the following upstreams *in this order*:
+:8ball: It will come with the following upstreams *in this order*:
+
 * :one: 1.1.1.3
 * :two: security.cloudflare-dns.com
 * :three: 1.1.1.2
 * :four: 1.0.0.2
 
-The default port is **54**.
+:nazar_amulet: The default port is **54**.
 
-Addres is *0.0.0.0*
+:bangbang: Addres is *0.0.0.0*
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
@@ -122,9 +141,9 @@ INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:5
 ```
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
-## Set up together with [PiHole](https://hub.docker.com/r/pihole/pihole)
+## Set up together with [PiHole](https://github.com/pi-hole/pi-hole)
 
-:yin_yang: PiHole with **cloudflared** is a match in heaven :bangbang:
+:yin_yang: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven :bangbang:
 
 :arrow_down: Check out this [docker-compose.yml](https://docs.docker.com/compose/):
 
@@ -141,13 +160,17 @@ services:
     environment:
       TZ: 'Europe/London'
       WEBPASSWORD: 'admin'
-      DNS1: '127.0.0.1#54'
+      ServerIP: '172.18.0.2'
+      DNS1: '172.18.0.3#54'
       DNS2: 'no'
     volumes:
       - './etc-pihole/:/etc/pihole/'
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
+    networks:
+      pihole_net:
+        ipv4_address: 172.18.0.2
 
   cloudflare:
     restart: unless-stopped
@@ -158,6 +181,16 @@ services:
     ports:
       - "54:54/tcp"
       - "54:54/udp"
+    networks:
+      pihole_net:
+        ipv4_address: 172.18.0.3
+
+networks:
+  pihole_net:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.18.0.0/24
 ```
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
