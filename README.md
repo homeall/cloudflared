@@ -106,6 +106,8 @@ INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 216.58.211.174
 ```
 
+![](./cloudflared.gif)
+
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 ### Custom upstreams and custom port number:  
