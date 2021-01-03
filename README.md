@@ -217,7 +217,7 @@ networks:
      config:
        - subnet: 172.18.0.0/24
 ```
-> You will have to use the network mode and hardcoded IP address to forward correctly queries to Cloudflare for each container.
+> You will have to use the network mode and hardcoded IP address on each container to forward correctly queries to Cloudflare.
 > Otherwise, you may get issues config from dnsmask.d on PiHole.
 > If you use networking host mode, it will forward correctly queries to localhost on 54 port.
 
