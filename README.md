@@ -45,7 +45,7 @@
 
 :sparkle: I am using GitHub actions weekly where it will update cloudflared binary in order to keep up to date the docker image and the package.
 
-:mens: You will find in readme page how to use the commands with images.
+:mens: You will find on the readme page how to use the commands with images.
 
 :eight_pointed_black_star: It is useful for setting up together with :copyright: [PiHole](https://github.com/pi-hole/pi-hole).
 
