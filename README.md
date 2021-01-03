@@ -117,7 +117,7 @@ INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 
 ### Custom upstreams and custom port number:  
 
-:biohazard: You can run change first two upstreams **DNS1** and **DNS2** and *port number*.
+:biohazard: You can change first two upstreams **DNS1** and **DNS2** and *port number*.
 
 :fountain_pen: Change to fit your needs:
 
