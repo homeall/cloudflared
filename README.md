@@ -39,17 +39,19 @@
 
 ## About The Project
 
-:white_check_mark: The primary purpose of creating a custom docker image with only Cloudflare was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only security upstreams :arrow_down: including four upstreams DNS, not only like the rest of images on Docker hub. 
+:white_check_mark: The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only security upstreams :arrow_down: including **four** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)), :warning: not only like the rest of images on Docker hub. 
 
-:heavy_exclamation_mark: I believe it is useful in Docker environment or Kubernetes where High availability is a must.
+:heavy_exclamation_mark: I believe it is useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
 
-:eight_pointed_black_star: It is useful for setting up together with :registered: [PiHole](https://github.com/pi-hole/pi-hole).
+:eight_pointed_black_star: It is useful for setting up together with :copyright: [PiHole](https://github.com/pi-hole/pi-hole).
 
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 <!-- GETTING STARTED -->
 ## Getting Started
+
+:beginner: It will work on any Linux box amd64 or Raspberry Pi with arm64 or arm32. 
 
 ### Prerequisites
 
@@ -153,7 +155,7 @@ INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:5
 
 ## [PiHole](https://github.com/pi-hole/pi-hole)
 
-:yin_yang: :registered: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven :bangbang:
+:yin_yang: :copyright: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven :bangbang:
 
 :arrow_down: Check out this [docker-compose.yml](https://docs.docker.com/compose/):
 
@@ -225,6 +227,6 @@ networks:
 
 * :tada: [@Cloudflared](https://github.com/cloudflare/cloudflared) :1st_place_medal:
 
-* :tada: :registered: [@PiHole](https://github.com/pi-hole/pi-hole) :medal_sports:
+* :tada: :copyright: [@PiHole](https://github.com/pi-hole/pi-hole) :medal_sports:
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
