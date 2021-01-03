@@ -49,6 +49,7 @@
 
 :eight_pointed_black_star: It is useful for setting up together with :copyright: [PiHole](https://github.com/pi-hole/pi-hole).
 
+:no_entry_sign: If you need ADs protection and privacy, this may help you in long term.
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
