@@ -39,7 +39,11 @@
 
 ## About The Project
 
-It is useful for setting up together with [PiHole](https://github.com/pi-hole/pi-hole).
+:white_check_mark: The primary purpose of creating a custom docker image with only Cloudflare was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only security upstreams :arrow_down: including four upstreams DNS, not only like the rest of images on Docker hub. 
+
+:heavy_exclamation_mark: I believe it is useful in Docker environment or Kubernetes where High availability is a must.
+
+:eight_pointed_black_star: It is useful for setting up together with :registered: [PiHole](https://github.com/pi-hole/pi-hole).
 
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
@@ -149,7 +153,7 @@ INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:5
 
 ## [PiHole](https://github.com/pi-hole/pi-hole)
 
-:yin_yang: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven :bangbang:
+:yin_yang: :registered: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven :bangbang:
 
 :arrow_down: Check out this [docker-compose.yml](https://docs.docker.com/compose/):
 
@@ -221,6 +225,6 @@ networks:
 
 * :tada: [@Cloudflared](https://github.com/cloudflare/cloudflared) :1st_place_medal:
 
-* :tada: [@PiHole](https://github.com/pi-hole/pi-hole) :medal_sports:
+* :tada: :registered: [@PiHole](https://github.com/pi-hole/pi-hole) :medal_sports:
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
