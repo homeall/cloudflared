@@ -159,6 +159,8 @@ INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:5
 ❯ dig google.com @::1 -p 54 +short
 216.58.213.14
 ```
+![](./dualstack-cloudflared.gif)
+
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 ## [PiHole](https://github.com/pi-hole/pi-hole)
