@@ -40,6 +40,8 @@
 ## About The Project
 
 It is useful for setting up together with [PiHole](https://github.com/pi-hole/pi-hole).
+
+
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 <!-- GETTING STARTED -->
@@ -69,7 +71,7 @@ You will need to have:
 
 :nazar_amulet: The default port is **54**.
 
-:bangbang: Addres is *0.0.0.0*
+:bangbang: The IP addres is **0.0.0.0**
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
@@ -102,7 +104,7 @@ INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 
 :biohazard: You can run change first two upstreams **DNS1** and **DNS2** and *port number*.
 
-:eight_pointed_black_star: You can run:
+:eight_pointed_black_star: Change to fit your needs:
 
 ```docker run -d --name cloudflared -p "5353:5353" -p "5353:5353/udp" -e "DNS1=8.8.8.8" -e "DNS2=1.1.1.1" -e "PORT=5353" homeall/cloudflared:latest```
 
