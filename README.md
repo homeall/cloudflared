@@ -87,7 +87,7 @@ You will need to have:
 
 ### Docker run command: 
 
-```docker run -d --name cloudflare -p "54:54" -p "54:54/udp" homeall/cloudflared:latest```
+`docker run -d --name cloudflare -p "54:54" -p "54:54/udp" homeall/cloudflared:latest`
 
 :arrow_down: Docker logs output:
 
@@ -118,7 +118,7 @@ INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 
 :fountain_pen: Change to fit your needs:
 
-```docker run -d --name cloudflare -p "5353:5353" -p "5353:5353/udp" -e "DNS1=dns.google" -e "DNS2=1.1.1.1" -e "PORT=5353" homeall/cloudflared:latest```
+`docker run -d --name cloudflare -p "5353:5353" -p "5353:5353/udp" -e "DNS1=dns.google" -e "DNS2=1.1.1.1" -e "PORT=5353" homeall/cloudflared:latest`
 
 :arrow_down: Output result:
 
