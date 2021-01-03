@@ -43,6 +43,8 @@
 
 :heavy_exclamation_mark: I believe it is useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
 
+:sparkle: I am using GitHub actions weekly where it will update cloudflared binary in order to keep up to date the docker image and the package.
+
 :eight_pointed_black_star: It is useful for setting up together with :copyright: [PiHole](https://github.com/pi-hole/pi-hole).
 
 
