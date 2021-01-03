@@ -1,5 +1,7 @@
 [![cloudflared](https://github.com/homeall/cloudflared/workflows/CI/badge.svg)](https://github.com/homeall/cloudflared/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![pull](https://img.shields.io/docker/pulls/homeall/cloudflared)](https://img.shields.io/docker/pulls/homeall/cloudflared) [![pull](https://img.shields.io/docker/image-size/homeall/cloudflared)](https://img.shields.io/docker/image-size/homeall/cloudflared)
 
+# Docker image with [cloudflared](https://github.com/cloudflare/cloudflared) for *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)*
+
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
@@ -31,7 +33,6 @@
   </ol>
 </details>
 
-# Docker image with [cloudflared](https://github.com/cloudflare/cloudflared) for *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)*
 
 It is useful for setting up together with [PiHole](https://github.com/pi-hole/pi-hole).
 
@@ -162,7 +163,7 @@ services:
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
  <!-- LICENSE -->
- ### Licence
+ ## Licence
 
 :newspaper_roll: Distributed under the MIT license. See [LICENSE](https://raw.githubusercontent.com/homeall/cloudflared/main/LICENSE) for more information.
 
