@@ -131,6 +131,8 @@ INFO[2021-01-01T20:08:36Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
 INFO[2021-01-01T20:08:36Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.0:5353
 ```
 
+![](./custom-cloudflared.gif)
+
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 ### Dualstack Ipv4 IPv6
