@@ -39,7 +39,7 @@
 
 ## About The Project
 
-:white_check_mark: The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only security upstreams :arrow_down: including **four** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)), :warning: not only like the rest of images on Docker hub. 
+:white_check_mark: The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only security upstreams :arrow_down: including **four** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)).
 
 :heavy_exclamation_mark: I believe it is useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
 
