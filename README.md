@@ -165,7 +165,7 @@ INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:5
 
 ## [PiHole](https://github.com/pi-hole/pi-hole)
 
-:yin_yang: :copyright: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven :bangbang:
+:yin_yang: :copyright: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven for privacy and ADs protection :bangbang:
 
 :arrow_down: Check out this [docker-compose.yml](https://docs.docker.com/compose/):
 
@@ -234,6 +234,7 @@ networks:
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
+<!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
 * :tada: [@Visibilityspots](https://github.com/visibilityspots/dockerfile-cloudflared) :trophy:
