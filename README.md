@@ -73,7 +73,7 @@ You will need to have:
 
 ### Default Settings
 
-:8ball: It will come with the following upstreams *in this order*:
+:8ball: It will come with the following **security** upstreams *in this order*:
 
 * :one: 1.1.1.3
 * :two: security.cloudflare-dns.com
