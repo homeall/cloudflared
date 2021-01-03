@@ -80,6 +80,8 @@ You will need to have:
 * :three: 1.1.1.2
 * :four: 1.0.0.2
 
+:warning: Please review this [link](https://1.1.1.1/family/) in order to get more details about the upstreams above.
+
 :nazar_amulet: The default port is **54**.
 
 :bangbang: The IP addres is **0.0.0.0**
