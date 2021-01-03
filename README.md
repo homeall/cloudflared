@@ -18,15 +18,19 @@
     <li>
       <a href="#usage">Usage</a>
       <ul>
-        <li><a href="#potentials-issues">Potentials issues</a></li>
+        <li><a href="#default-settings">Default Settings</a></li>
       </ul>
        <ul>
-        <li><a href="#testing">Testing</a></li>
+        <li><a href="#docker-run-command">Docker run command</a></li>
       </ul>
        <ul>
-        <li><a href="#pihole-and-dhcp-relay">PiHole and DHCP Relay</a></li>
+        <li><a href="#custom-upstreams-and-custom-port-number">Custom upstreams and custom port number</a></li>
+      </ul>
+       <ul>
+        <li><a href="#dualstack-ipv4-ipv6">Dualstack Ipv4/IPv6</a></li>
       </ul>
     </li>
+    <li><a href="#pihole">PiHole</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
@@ -115,7 +119,7 @@ INFO[2021-01-01T20:08:36Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
-### Dualstack Ipv4/IPv6
+### Dualstack Ipv4 IPv6
 
 :warning: You also can use:
 
@@ -141,7 +145,7 @@ INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:5
 ```
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
-## Set up together with [PiHole](https://github.com/pi-hole/pi-hole)
+## [PiHole](https://github.com/pi-hole/pi-hole)
 
 :yin_yang: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven :bangbang:
 
@@ -196,7 +200,7 @@ networks:
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
  <!-- LICENSE -->
- ## Licence
+ ## License
 
 :newspaper_roll: Distributed under the MIT license. See [LICENSE](https://raw.githubusercontent.com/homeall/cloudflared/main/LICENSE) for more information.
 
