@@ -47,7 +47,7 @@
 
 :mens: You will find on the readme page how to use the commands with images.
 
-:eight_pointed_black_star: It is useful for setting up together with :copyright: [PiHole](https://github.com/pi-hole/pi-hole).
+:eight_pointed_black_star: It is advantageous for setting up together with :copyright: [PiHole](https://github.com/pi-hole/pi-hole).
 
 :no_entry_sign: If you need ADs protection and privacy, this may help you in long term.
 
