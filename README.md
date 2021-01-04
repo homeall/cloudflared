@@ -41,7 +41,7 @@
 
 :white_check_mark: The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only **security** upstreams :arrow_down: including **four** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)).
 
-:heavy_exclamation_mark: I believe it is useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
+:heavy_exclamation_mark: It will be very useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
 
 :sparkle: I am using GitHub actions weekly where it will update cloudflared binary in order to keep up to date the docker image and the package.
 
