@@ -99,7 +99,7 @@ You will need to have:
 :arrow_down: Please test yourself using the following command:
 
 ```
-docker inspect --format "{{json .State.Health }}" cloudflare | jq
+> docker inspect --format "{{json .State.Health }}" cloudflare | jq
 {
   "Status": "healthy",
   "FailingStreak": 0,
