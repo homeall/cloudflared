@@ -90,8 +90,29 @@ You will need to have:
 
 ### Docker run command: 
 
+:diamonds: Unless you need to change the default setting, it will work as expected with the command below:
+
 `docker run -d --name cloudflare -p "54:54" -p "54:54/udp" homeall/cloudflared:latest`
 
+:hearts: On the status column of the docker, you will notice the `healthy` word. This is telling you that docker is running [healtcheck](https://scoutapm.com/blog/how-to-use-docker-healthcheck) itself in order to make sure it is working properly. 
+
+:arrow_down: Please test yourself using the following command:
+
+```
+docker inspect --format "{{json .State.Health }}" cloudflare | jq
+{
+  "Status": "healthy",
+  "FailingStreak": 0,
+  "Log": [
+    {
+      "Start": "2021-01-04T10:42:21.5982274Z",
+      "End": "2021-01-04T10:42:21.6848715Z",
+      "ExitCode": 0,
+      "Output": "Server:\t\t127.0.0.1\nAddress:\t127.0.0.1#54\n\nName:\tcloudflare.com\nAddress: 104.16.133.229\nName:\tcloudflare.com\nAddress: 104.16.132.229\nName:\tcloudflare.com\nAddress: 2606:4700::6810:84e5\nName:\tcloudflare.com\nAddress: 2606:4700::6810:85e5\n\n"
+    }
+  ]
+}
+```
 :arrow_down: Docker logs output:
 
 ```
