@@ -41,7 +41,7 @@
 
 The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only **security** upstreams :arrow_down: including **four** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)).
 
-:heavy_exclamation_mark: It will be very useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
+:heavy_exclamation_mark:It will be very useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
 
 I am using GitHub actions weekly where it will update cloudflared binary in order to keep up to date the docker image and the package.
 
@@ -128,7 +128,7 @@ INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 216.58.211.174
 ```
 
-![](./cloudflared.gif)
+![](./assets/cloudflared.gif)
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
@@ -151,7 +151,7 @@ INFO[2021-01-01T20:08:36Z] Adding DNS upstream - url: https://1.0.0.2/dns-query
 INFO[2021-01-01T20:08:36Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.0:5454
 ```
 
-![](./custom-cloudflared.gif)
+![](./assets/custom-cloudflared.gif)
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
@@ -179,7 +179,7 @@ INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:5
 ❯ dig google.com @::1 -p 54 +short
 216.58.213.14
 ```
-![](./dualstack-cloudflared.gif)
+![](./assets/dualstack-cloudflared.gif)
 
 :arrow_up: [Go on TOP](#about-the-project) :point_up:
 
