@@ -39,19 +39,17 @@
 
 ## About The Project
 
-:white_check_mark: The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only **security** upstreams :arrow_down: including **four** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)).
+The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only **security** upstreams :arrow_down: including **four** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)).
 
 :heavy_exclamation_mark: It will be very useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
 
-:sparkle: I am using GitHub actions weekly where it will update cloudflared binary in order to keep up to date the docker image and the package.
+I am using GitHub actions weekly where it will update cloudflared binary in order to keep up to date the docker image and the package.
 
-:mens: You will find on the readme page how to use the commands with images.
+You will find on the readme page how to use the commands with images.
 
-:eight_pointed_black_star: It is advantageous for setting up together with :copyright: [PiHole](https://github.com/pi-hole/pi-hole).
+It is advantageous for setting up together with :copyright: [PiHole](https://github.com/pi-hole/pi-hole).
 
 :no_entry_sign: If you need ADs protection and privacy, this may help you in long term.
-
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -62,20 +60,18 @@
 
 [![Made with Docker !](https://img.shields.io/badge/Made%20with-Docker-blue)](https://github.com/homeall/cloudflared/blob/main/Dockerfile)
 
-:8ball: You will need to have:
+You will need to have:
 
 * :whale: [Docker](https://docs.docker.com/engine/install/)
 * :whale2: [docker-compose](https://docs.docker.com/compose/) 
  >This step is optional
-
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 <!-- USAGE -->
 ## Usage
 
 ### Default Settings
 
-:8ball: It will come with the following **security** upstreams *in this order*:
+It will come with the following **security** upstreams *in this order*:
 
 * :one: 1.1.1.3
 * :two: security.cloudflare-dns.com
@@ -84,15 +80,13 @@
 
 :warning: Please review this [link](https://1.1.1.1/family/) in order to get more details about the upstreams above.
 
-:nazar_amulet: The default port is **54**.
+The default port is **54**.
 
-:bangbang: The IP addres is **0.0.0.0**
-
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
+The IP addres is **0.0.0.0**
 
 ### Docker run command: 
 
-:diamonds: Unless you need to change the default setting, it will work as expected with the command below:
+Unless you need to change the default setting, it will work as expected with the command below:
 
 `docker run -d --name cloudflare -p "54:54" -p "54:54/udp" homeall/cloudflared:latest`
 
@@ -140,9 +134,9 @@ INFO[2021-01-01T20:03:37Z] Starting DNS over HTTPS proxy server on: dns://0.0.0.
 
 ### Custom upstreams and custom port number:  
 
-:biohazard: You can change first two upstreams **DNS1** and **DNS2** and *port number*.
+You can change first two upstreams **DNS1** and **DNS2** and *port number*.
 
-:fountain_pen: Change to fit your needs:
+Change to fit your needs:
 
 `docker run -d --name cloudflare -p "5454:5454" -p "5454:5454/udp" -e "DNS1=dns.google" -e "DNS2=1.1.1.1" -e "PORT=5454" homeall/cloudflared:latest`
 
@@ -191,7 +185,7 @@ INFO[2021-01-02T14:38:53Z] Starting DNS over HTTPS proxy server on: dns://[::]:5
 
 ## [PiHole](https://github.com/pi-hole/pi-hole)
 
-:yin_yang: :copyright: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven for privacy and ADs protection :bangbang:
+:copyright: [PiHole](https://github.com/pi-hole/pi-hole) with **cloudflared** is a match in heaven for privacy and ADs protection :bangbang:
 
 :arrow_down: Check out this [docker-compose.yml](https://docs.docker.com/compose/):
 
@@ -244,21 +238,15 @@ networks:
 > Otherwise, you may get issues config from dnsmask.d on PiHole.
 > If you use networking host mode, it will forward correctly queries to localhost on 54 port.
 
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
-
  <!-- LICENSE -->
  ## License
 
 :newspaper_roll: Distributed under the MIT license. See [LICENSE](https://raw.githubusercontent.com/homeall/cloudflared/main/LICENSE) for more information.
 
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
-
 <!-- CONTACT -->
 ## Contact
 
 :red_circle: Please free to open a ticket on Github.
-
-:arrow_up: [Go on TOP](#about-the-project) :point_up:
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
