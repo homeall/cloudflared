@@ -39,7 +39,7 @@
 
 ## About The Project
 
-The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only **security** upstreams :arrow_down: including **four** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)).
+The primary purpose of creating a custom docker image with only **[cloudflared](https://github.com/cloudflare/cloudflared)** was to use *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)* with only **security** upstreams :arrow_down: including **three** DNSs (very good for [fail over](https://en.wikipedia.org/wiki/Failover)).
 
 :heavy_exclamation_mark:It will be very useful in Docker environment or Kubernetes where [High Availability](https://en.wikipedia.org/wiki/High-availability_cluster) is a must.
 
@@ -76,7 +76,6 @@ It will come with the following **security** upstreams *in this order*:
 * :one: 1.1.1.3
 * :two: security.cloudflare-dns.com
 * :three: 1.1.1.2
-* :four: 1.0.0.2
 
 :warning: Please review this [link](https://1.1.1.1/family/) in order to get more details about the upstreams above.
 
