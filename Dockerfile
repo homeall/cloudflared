@@ -24,7 +24,7 @@ ENV ADDRESS=""
 ENV METRICS=127.0.0.1:8080
 
 RUN adduser -S cloudflared; \
-    apk add --no-cache ca-certificates bind-tools libcap; \
+    apk add --no-cache ca-certificates bind-tools libcap tzdata; \
     rm -rf /var/cache/apk/*;
 
 COPY --from=gobuild /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared/cloudflared /usr/local/bin/cloudflared
