@@ -219,6 +219,8 @@ services:
     ports:
       - "54:54/tcp"
       - "54:54/udp"
+    environment:
+      TZ: 'Europe/London'
     networks:
       pihole_net:
         ipv4_address: 172.18.0.3
