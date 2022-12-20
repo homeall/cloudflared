@@ -1,5 +1,5 @@
-ARG GOLANG_VERSION=1.19.3
-ARG ALPINE_VERSION=3.16
+ARG GOLANG_VERSION=1.19.4
+ARG ALPINE_VERSION=3.17
 
 FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} as gobuild
 
@@ -22,6 +22,7 @@ ENV DNS2=""
 ENV PORT=""
 ENV ADDRESS=""
 ENV METRICS=127.0.0.1:8080
+ENV MAX_UPSTREAM_CONNS=0
 
 RUN adduser -S cloudflared; \
     apk add --no-cache ca-certificates bind-tools libcap tzdata; \
@@ -39,4 +40,4 @@ EXPOSE ${PORT:-54}/tcp
 
 USER cloudflared
 
-CMD /usr/local/bin/cloudflared proxy-dns --address ${ADDRESS:-0.0.0.0} --port ${PORT:-54} --metrics ${METRICS} --upstream https://${DNS1:-1.1.1.3}/dns-query --upstream https://${DNS2:-security.cloudflare-dns.com}/dns-query --upstream https://1.1.1.2/dns-query
+CMD /usr/local/bin/cloudflared proxy-dns --address ${ADDRESS:-0.0.0.0} --port ${PORT:-54} --metrics ${METRICS} --upstream https://${DNS1:-1.1.1.3}/dns-query --upstream https://${DNS2:-security.cloudflare-dns.com}/dns-query --upstream https://1.1.1.2/dns-query --max-upstream-conns ${MAX_UPSTREAM_CONNS}
