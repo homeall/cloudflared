@@ -1,23 +1,27 @@
+# Define a build-time argument for the base URL
+ARG CLOUDFLARED_BASE_URL=https://github.com/cloudflare/cloudflared/releases/download/
+
 # Stage 1: Download the correct cloudflared binary based on the target platform
 FROM alpine AS downloader
 
+ARG CLOUDFLARED_BASE_URL
+ARG CLOUDFLARED_VERSION
 ARG TARGETPLATFORM
-ARG CLOUDFLARED_VERSION=
 
 # Use a case statement to determine the correct binary to download based on the target platform
 RUN case "${TARGETPLATFORM}" in \
     "linux/amd64") \
-      CLOUDFLARED_BINARY_URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64" \
+      BINARY_URL="${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-amd64" \
       ;; \
     "linux/arm/v6"|"linux/arm/v7") \
-      CLOUDFLARED_BINARY_URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm" \
+      BINARY_URL="${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm" \
       ;; \
     "linux/arm64") \
-      CLOUDFLARED_BINARY_URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm64" \
+      BINARY_URL="${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm64" \
       ;; \
     *) echo "Unsupported platform: ${TARGETPLATFORM}"; exit 1 ;; \
     esac && \
-    wget -O /cloudflared "${CLOUDFLARED_BINARY_URL}" && \
+    wget -O /cloudflared "${BINARY_URL}" && \
     chmod +x /cloudflared
 
 # Stage 2: Setup the runtime environment
