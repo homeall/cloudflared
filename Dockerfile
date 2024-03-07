@@ -1,5 +1,5 @@
 # Define a build-time argument for the base URL
-ARG CLOUDFLARED_BASE_URL=https://github.com/cloudflare/cloudflared/releases/download/
+ARG CLOUDFLARED_BASE_URL="https://github.com/cloudflare/cloudflared/releases/download/"
 
 # Stage 1: Download the correct cloudflared binary based on the target platform
 FROM alpine AS downloader
