@@ -25,7 +25,7 @@ FROM alpine
 
 # Copy environment variables and argument declarations if necessary
 
-RUN apk add --no-cache ca-certificates tzdata && \
+RUN apk add --no-cache ca-certificates tzdata libcap && \
     adduser -S cloudflared
 
 # Copy the cloudflared binary from the downloader stage
