@@ -6,7 +6,8 @@ FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} as gobuild
 RUN apk add --no-cache git gcc build-base
 ENV GO111MODULE=on \
     CGO_ENABLED=0
-RUN go install -v github.com/cloudflare/cloudflared/cmd/cloudflared@latest
+RUN apk add --no-cache git gcc build-base; \
+            GO111MODULE=on CGO_ENABLED=0 go get -v github.com/cloudflare/cloudflared/cmd/cloudflared
 
 WORKDIR /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared
 
