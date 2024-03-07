@@ -8,7 +8,7 @@ RUN apk add --no-cache git gcc build-base
 ENV GO111MODULE=on \
   CGO_ENABLED=0
 
-RUN GO111MODULE=on CGO_ENABLED=0 go install -v github.com/cloudflare/cloudflared/cmd/cloudflared
+RUN go install -v github.com/cloudflare/cloudflared/cmd/cloudflared@latest
 
 WORKDIR /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared
 
