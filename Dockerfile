@@ -1,43 +1,57 @@
-ARG GOLANG_VERSION=1.20.6
-ARG ALPINE_VERSION=3.18
+# Stage 1: Download the correct cloudflared binary based on the target platform
+FROM alpine AS downloader
 
-FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} as gobuild
+ARG TARGETPLATFORM
+ARG CLOUDFLARED_VERSION=
 
-RUN apk add --no-cache git gcc build-base; \
-            GO111MODULE=auto go get -v github.com/cloudflare/cloudflared/cmd/cloudflared
+# Use a case statement to determine the correct binary to download based on the target platform
+RUN case "${TARGETPLATFORM}" in \
+    "linux/amd64") \
+      CLOUDFLARED_BINARY_URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64" \
+      ;; \
+    "linux/arm/v6"|"linux/arm/v7") \
+      CLOUDFLARED_BINARY_URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm" \
+      ;; \
+    "linux/arm64") \
+      CLOUDFLARED_BINARY_URL="https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm64" \
+      ;; \
+    *) echo "Unsupported platform: ${TARGETPLATFORM}"; exit 1 ;; \
+    esac && \
+    wget -O /cloudflared "${CLOUDFLARED_BINARY_URL}" && \
+    chmod +x /cloudflared
 
-WORKDIR /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared
+# Stage 2: Setup the runtime environment
+FROM alpine
 
-RUN go build ./
+# Copy environment variables and argument declarations if necessary
 
-FROM alpine:${ALPINE_VERSION}
+RUN apk add --no-cache ca-certificates tzdata && \
+    adduser -S cloudflared
 
-ARG GOLANG_VERSION
-ARG ALPINE_VERSION
+# Copy the cloudflared binary from the downloader stage
+COPY --from=downloader /cloudflared /usr/local/bin/cloudflared
 
-LABEL maintainer="HomeAll"
-
-ENV DNS1=""
-ENV DNS2=""
-ENV PORT=""
-ENV ADDRESS=""
-ENV METRICS=127.0.0.1:8080
-ENV MAX_UPSTREAM_CONNS=0
-
-RUN adduser -S cloudflared; \
-    apk add --no-cache ca-certificates bind-tools libcap tzdata; \
-    rm -rf /var/cache/apk/*;
-
-COPY --from=gobuild /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared/cloudflared /usr/local/bin/cloudflared
-
-RUN setcap CAP_NET_BIND_SERVICE+eip /usr/local/bin/cloudflared
-
-HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD nslookup -po=${PORT:-54} cloudflare.com 127.0.0.1 || exit 1
-
-EXPOSE ${PORT:-54}/udp
-
-EXPOSE ${PORT:-54}/tcp
+# Setup capability to allow cloudflared to bind to privileged ports
+RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/cloudflared
 
 USER cloudflared
 
-CMD /usr/local/bin/cloudflared proxy-dns --address ${ADDRESS:-0.0.0.0} --port ${PORT:-54} --metrics ${METRICS} --upstream https://${DNS1:-1.1.1.3}/dns-query --upstream https://${DNS2:-security.cloudflare-dns.com}/dns-query --upstream https://1.1.1.2/dns-query --max-upstream-conns ${MAX_UPSTREAM_CONNS}
+# Default configuration for cloudflared
+ENV DNS1="1.1.1.3"
+ENV DNS2="security.cloudflare-dns.com"
+ENV PORT="54"
+ENV ADDRESS="0.0.0.0"
+ENV METRICS="127.0.0.1:8080"
+ENV MAX_UPSTREAM_CONNS="0"
+
+EXPOSE ${PORT}/udp
+EXPOSE ${PORT}/tcp
+
+CMD ["/usr/local/bin/cloudflared", "proxy-dns", \
+    "--address", "${ADDRESS}", \
+    "--port", "${PORT}", \
+    "--metrics", "${METRICS}", \
+    "--upstream", "https://${DNS1}/dns-query", \
+    "--upstream", "https://${DNS2}/dns-query", \
+    "--upstream", "https://1.1.1.2/dns-query", \
+    "--max-upstream-conns", "${MAX_UPSTREAM_CONNS}"]
