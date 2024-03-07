@@ -17,9 +17,9 @@ jobs:
       - name: Get latest cloudflared version
         id: cloudflared_version
         run: |
-          LATEST_VERSION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep tag_name | cut -d '"' -f 4)
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep '"tag_name":' | cut -d '"' -f 4)
           echo "Latest cloudflared version is ${LATEST_VERSION}"
-          echo "::set-output name=version::${LATEST_VERSION}"
+          echo "CLOUDFLARED_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
         
       - name: Set ENV
         run: echo "TAG=$(echo $(date +%Y.%m.%d))" >> $GITHUB_ENV
@@ -43,7 +43,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            CLOUDFLARED_VERSION=${{ steps.cloudflared_version.outputs.version }}
+            CLOUDFLARED_VERSION=${{ env.CLOUDFLARED_VERSION }}
           platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
           push: true
           tags: |
