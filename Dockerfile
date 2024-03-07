@@ -3,8 +3,9 @@ ARG ALPINE_VERSION=3.19
 
 FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} as gobuild
 
-RUN apk add --no-cache git gcc build-base; \
-            GO111MODULE=auto go install github.com/cloudflare/cloudflared/cmd/cloudflared@latest
+RUN apk add --no-cache git gcc build-base
+
+RUN GO111MODULE=auto go install github.com/cloudflare/cloudflared/cmd/cloudflared@latest
 
 WORKDIR /go/src/github.com/cloudflare/cloudflared/cmd/cloudflared
 
