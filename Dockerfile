@@ -51,6 +51,8 @@ ENV MAX_UPSTREAM_CONNS="0"
 EXPOSE ${PORT}/udp
 EXPOSE ${PORT}/tcp
 
+HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD nslookup -po=${PORT:-54} cloudflare.com 127.0.0.1 || exit 1
+
 CMD ["/usr/local/bin/cloudflared", "proxy-dns", \
     "--address", "${ADDRESS}", \
     "--port", "${PORT}", \
