@@ -108,7 +108,7 @@ jobs:
 
       - name: Sign the Published Docker Image
         id: sign-image
-        if: ${{ github.event_name != 'pull_request' }}
+        if: github.event_name != 'pull_request'
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           DIGEST: ${{ steps.build.outputs.digest }}
