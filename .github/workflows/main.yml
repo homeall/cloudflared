@@ -134,7 +134,7 @@ jobs:
         uses: Noelware/docker-manifest-action@1.0.0
         with:
           inputs: ghcr.io/${{ github.repository }}:slim
-          images: ghcr.io/${{ github.repository }}:slim-amd64,ghcr.io/${{ github.repository }}:slim-arm64
+          tags: ghcr.io/${{ github.repository }}:slim-amd64,ghcr.io/${{ github.repository }}:slim-arm64
           push: true
           
       - name: Generate artifact attestation
