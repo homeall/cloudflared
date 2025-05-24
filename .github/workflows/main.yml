@@ -196,7 +196,7 @@ jobs:
         run: |
           TAG="${{ env.TAG }}"
           REPO="${{ github.repository }}"
-          DIGEST="${{ steps.extract_digest.outputs.digest }}"
+          DIGEST="${{ steps.build.outputs.digest }}"
           RUN_ID=${{ github.run_id }}
           {
             echo "## 🚀 Docker Images for This Release"
