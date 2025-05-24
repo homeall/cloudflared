@@ -26,7 +26,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@v3.8.2
         with:
-          cosign-release: 'v2.4.2'
+          cosign-release: 'v2.4.3'
           
       - name: Get latest cloudflared version
         id: cloudflared_version
@@ -127,7 +127,7 @@ jobs:
         uses: Noelware/docker-manifest-action@1.0.0
         with:
           inputs: ${{ github.repository }}:slim
-          images: ${{ github.repository }}:slim-amd64,${{ github.repository }}:slim-arm64
+          tags: ${{ github.repository }}:slim-amd64,${{ github.repository }}:slim-arm64
           push: true
 
       - name: Create and Push Multi-Arch Manifest for Slim Image for GHCR
@@ -191,6 +191,99 @@ jobs:
             cosign sign --yes "${tag}"
           done
 
+      - name: Generate Release Notes (Docker & Supply Chain Info)
+        if: github.event_name != 'pull_request'
+        run: |
+          TAG="${{ env.TAG }}"
+          REPO="${{ github.repository }}"
+          DIGEST="${{ steps.extract_digest.outputs.digest }}"
+          RUN_ID=${{ github.run_id }}
+          {
+            echo "## 🚀 Docker Images for This Release"
+            echo ""
+            echo "This release provides multi-architecture Docker images (\`amd64\`, \`arm64\`, and \`arm\`) published to both **Docker Hub** and **GitHub Container Registry (GHCR)**."
+            echo ""
+            echo "---"
+            echo ""
+            echo "### 🔹 **Docker Hub**"
+            echo ""
+            echo "> **Note:** Docker Hub is the world's most popular public container registry, but it enforces [anonymous pull limits](https://www.docker.com/increase-rate-limits). If you are automating deployments or have many servers, consider using GHCR below to avoid interruptions."
+            echo ""
+            echo "**Repository:** \`${REPO}\`  "
+            echo "**Tags available:** \`latest\`, \`${TAG}\`"
+            echo "**Image Digest:** \`${DIGEST}\`"
+            echo ""
+            echo "**Pull commands:**"
+            echo "\`\`\`sh"
+            echo "docker pull ${REPO}:latest"
+            echo "\`\`\`"
+            echo "\`\`\`sh"
+            echo "docker pull ${REPO}:${TAG}"
+            echo "\`\`\`"
+            echo ""
+            echo "---"
+            echo ""
+            echo "### 🔹 **GitHub Container Registry (GHCR)**"
+            echo ""
+            echo "> **GHCR** offers higher pull rate limits, strong integration with GitHub, and is recommended for most CI/CD or cloud-native environments."
+            echo ""
+            echo "**Repository:** \`ghcr.io/${REPO}\`  "
+            echo "**Tags available:** \`latest\`, \`${TAG}\`"
+            echo ""
+            echo "**Pull commands:**"
+            echo "\`\`\`sh"
+            echo "docker pull ghcr.io/${REPO}:latest"
+            echo "\`\`\`"
+            echo "\`\`\`sh"
+            echo "docker pull ghcr.io/${REPO}:${TAG}"
+            echo "\`\`\`"
+            echo "Pull by digest:"
+            echo "\`\`\`sh"
+            echo "docker pull ghcr.io/${REPO}@${DIGEST}"
+            echo "\`\`\`"
+            echo ""
+            echo "---"
+            echo ""
+            echo "### 🔒 Supply Chain Security"
+            echo ""
+            echo "These images are signed and include:"
+            echo ""
+            echo "- **SLSA Provenance:** Downloadable and verifiable from the GitHub UI."
+            echo "- **Cosign signatures:** For tamper-evidence and trust."
+            echo ""
+            echo "**How to verify:**"
+            echo ""
+            echo "# 1. Verify the image signature (recommended for everyone)"
+            echo "\`\`\`sh"
+            echo "cosign verify \\"
+            echo "  --certificate-identity \"https://github.com/${REPO}/.github/workflows/main.yml@refs/heads/main\" \\"
+            echo "  --certificate-oidc-issuer \"https://token.actions.githubusercontent.com\" \\"
+            echo "  ghcr.io/${REPO}:@${DIGEST}"
+            echo "\`\`\`"
+            echo ""
+            echo "# 2. Download provenance/SBOM from the workflow run artifacts below."
+            echo "##   Then verify with:"
+            echo "\`\`\`sh"
+            echo "gh attestation verify --owner ${REPO%%/*} <provenance-or-sbom-file.json>"
+            echo "\`\`\`"
+            echo "**Links:**"
+            echo ""
+            echo "- [GitHub Actions run #${RUN_ID}](https://github.com/${REPO}/actions/runs/${RUN_ID})"
+            echo "- [Attestations for this build](https://github.com/${REPO}/attestations)"
+            echo ""
+            echo "_Download the 'spdx.json' or provenance artifact from the run above to verify._"
+            echo ""
+            echo "_Note: 'cosign verify-attestation' is not supported for this release, as attestations are not yet published to the registry. Use the provenance file and 'gh attestation verify' instead._"
+            echo ""
+            echo "See [Sigstore Cosign Docs](https://docs.sigstore.dev/cosign/overview/) and [GitHub Attestation Docs](https://docs.github.com/en/code-security/supply-chain-security/understanding-supply-chain-security/using-slsa-compliance-for-actions) for full instructions."
+            echo ""
+            echo "---"
+            echo ""
+            echo "#### Need help or want to report an issue?"
+            echo "Open an issue on [GitHub](https://github.com/${REPO}/issues)."
+          } > release_notes.txt
+          
+
       - name: Create GitHub release
         id: github-releasing
         uses: ncipollo/release-action@v1.16.0
@@ -198,3 +291,4 @@ jobs:
           tag: ${{ env.TAG }}
           allowUpdates: true
           makeLatest: true
+          bodyFile: release_notes.txt
