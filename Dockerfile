@@ -7,17 +7,19 @@ ARG TARGETPLATFORM
 
 RUN apk add --no-cache wget bind-tools ca-certificates tzdata
 
+# Download the correct binary for the platform
 RUN case "${TARGETPLATFORM}" in \
     "linux/amd64") \
       wget -O /cloudflared "${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-amd64" ;; \
     "linux/arm64") \
       wget -O /cloudflared "${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm64" ;; \
-    "linux/arm") \
+    "linux/arm"|"linux/arm/v7") \
       wget -O /cloudflared "${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm" ;; \
     *) echo "Unsupported platform: ${TARGETPLATFORM}"; exit 1 ;; \
-esac && chmod +x /cloudflared
+  esac && chmod +x /cloudflared
 
 COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # --- Runtime Stage ---
 FROM gcr.io/distroless/static-debian12:nonroot
@@ -27,8 +29,6 @@ COPY --from=downloader /usr/bin/nslookup /usr/bin/nslookup
 COPY --from=downloader /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=downloader /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=downloader /entrypoint.sh /entrypoint.sh
-
-RUN chmod +x /entrypoint.sh
 
 USER nonroot
 
