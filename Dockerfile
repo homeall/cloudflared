@@ -12,7 +12,7 @@ RUN case "${TARGETPLATFORM}" in \
       wget -O /cloudflared "${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-amd64" ;; \
     "linux/arm64") \
       wget -O /cloudflared "${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm64" ;; \
-    "linux/arm"|"linux/arm/v7") \
+    "linux/arm") \
       wget -O /cloudflared "${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm" ;; \
     *) echo "Unsupported platform: ${TARGETPLATFORM}"; exit 1 ;; \
 esac && chmod +x /cloudflared
