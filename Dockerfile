@@ -12,7 +12,7 @@ RUN set -e; \
     case "${TARGETPLATFORM}" in \
         "linux/amd64") BINARY_URL="${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-amd64" ;; \
         "linux/arm64") BINARY_URL="${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm64" ;; \
-        "linux/arm") BINARY_URL="${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm" ;; \
+        "Linux/arm"|"linux/arm/v7") BINARY_URL="${CLOUDFLARED_BASE_URL}${CLOUDFLARED_VERSION}/cloudflared-linux-arm" ;; \
         *) echo "Unsupported platform: ${TARGETPLATFORM}"; exit 1 ;; \
     esac && \
     wget -O /cloudflared "$BINARY_URL" && chmod +x /cloudflared
