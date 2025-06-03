@@ -79,6 +79,8 @@ jobs:
           files: |
             ./docker-bake.hcl
             cwd://${{ steps.meta.outputs.bake-file }}
+          set: |
+            build.args.CLOUDFLARED_VERSION=${{ env.CLOUDFLARED_VERSION }}
           targets: build
           push: true
           sbom: true
