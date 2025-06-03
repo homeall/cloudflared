@@ -84,14 +84,20 @@ jobs:
           targets: build
           push: true
           sbom: true
-          provenance: mode=max      
-     
+          provenance: mode=max 
+          
+      - name: Extract Digest for Attestation
+        id: extract_digest
+        run: |
+          DIGEST=$(echo '${{ steps.bake.outputs.metadata }}' | jq -r '.build["containerimage.digest"]')
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
+
       - name: Generate artifact attestation
         id: artifacts
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: index.docker.io/${{ github.repository }}
-          subject-digest: ${{ steps.build.outputs.digest }}
+          subject-digest: ${{ steps.extract_digest.outputs.digest }}
           push-to-registry: true
 
       - name: Generate artifact attestation for GHCR
@@ -99,7 +105,7 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.build.outputs.digest }}
+          subject-digest: ${{ steps.extract_digest.outputs.digest }}
           push-to-registry: true
 
       - name: Generate SBOM GHCR
@@ -113,7 +119,7 @@ jobs:
         uses: actions/attest-sbom@v2
         with:
           subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.build.outputs.digest }}
+          subject-digest: ${{ steps.extract_digest.outputs.digest }}
           sbom-path: 'sbom.spdx.json'
           push-to-registry: true
 
@@ -122,7 +128,7 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build.outputs.digest }}
+          DIGEST: ${{ steps.extract_digest.outputs.digest }}
         run: |
           for tag in $TAGS; do
             echo "Signing ${tag}@${DIGEST}"
@@ -134,7 +140,7 @@ jobs:
         run: |
           TAG="${{ env.TAG }}"
           REPO="${{ github.repository }}"
-          DIGEST="${{ steps.build.outputs.digest }}"
+          DIGEST="${{ steps.extract_digest.outputs.digest }}"
           RUN_ID=${{ github.run_id }}
           {
             echo "## 🚀 Docker Images for This Release"
