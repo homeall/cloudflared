@@ -17,9 +17,6 @@ jobs:
       attestations: write
 
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
 
       - name: Install Cosign
         id: install-cosign
@@ -75,68 +72,18 @@ jobs:
             latest
             ${{ env.TAG }}
 
-      - name: Build and Push
-        id: build
-        uses: docker/build-push-action@v6
+      - name: Docker Bake Build and Push
+        id: bake
+        uses: docker/bake-action@v6.8.0
         with:
-          context: .
-          file: ./Dockerfile
-          build-args: |
-            CLOUDFLARED_VERSION=${{ env.CLOUDFLARED_VERSION }}
-          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+          files: |
+            ./docker-bake.hcl
+            cwd://${{ steps.meta.outputs.bake-file }}
+          targets: build
+          push: true
           sbom: true
-          provenance: mode=max
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Slim Docker Image for amd64
-        id: slim-amd64
-        uses: kitabisa/docker-slim-action@v1
-        env:
-          DSLIM_HTTP_PROBE: false
-          DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
-          DSLIM_IMAGE_BUILD_ARCH: amd64
-        with:
-          target: ${{ github.repository }}:latest
-          tag: slim-amd64
-      
-      - name: Slim Docker Image for arm64
-        id: slim-arm64
-        uses: kitabisa/docker-slim-action@v1
-        env:
-          DSLIM_HTTP_PROBE: false
-          DSLIM_NEW_LABEL: ${{ steps.meta.outputs.labels }}
-          DSLIM_IMAGE_BUILD_ARCH: arm64
-        with:
-          target: ${{ github.repository }}:latest
-          tag: slim-arm64
-
-      - name: Push Intermediate Slim Images
-        run: |
-          docker tag ${{ github.repository }}:slim-amd64 ghcr.io/${{ github.repository }}:slim-amd64
-          docker tag ${{ github.repository }}:slim-arm64 ghcr.io/${{ github.repository }}:slim-arm64
-          docker push ${{ github.repository }}:slim-amd64
-          docker push ${{ github.repository }}:slim-arm64
-          docker push ghcr.io/${{ github.repository }}:slim-amd64
-          docker push ghcr.io/${{ github.repository }}:slim-arm64
-          
-      - name: Create and Push Multi-Arch Manifest for Slim Image
-        uses: Noelware/docker-manifest-action@1.0.0
-        with:
-          inputs: ${{ github.repository }}:slim
-          tags: ${{ github.repository }}:slim-amd64,${{ github.repository }}:slim-arm64
-          push: true
-
-      - name: Create and Push Multi-Arch Manifest for Slim Image for GHCR
-        uses: Noelware/docker-manifest-action@1.0.0
-        with:
-          inputs: ghcr.io/${{ github.repository }}:slim
-          tags: ghcr.io/${{ github.repository }}:slim-amd64,ghcr.io/${{ github.repository }}:slim-arm64
-          push: true
-          
+          provenance: mode=max      
+     
       - name: Generate artifact attestation
         id: artifacts
         uses: actions/attest-build-provenance@v2
@@ -178,17 +125,6 @@ jobs:
           for tag in $TAGS; do
             echo "Signing ${tag}@${DIGEST}"
             COSIGN_EXPERIMENTAL=1 cosign sign --yes "${tag}@${DIGEST}"
-          done
-          
-      - name: Sign Slim Image
-        id: sign-slim
-        if: github.event_name != 'pull_request'
-        env:
-          COSIGN_EXPERIMENTAL: 1
-          SLIM_TAGS: "${{ github.repository }}:slim ghcr.io/${{ github.repository }}:slim"
-        run: |
-          for tag in $SLIM_TAGS; do
-            cosign sign --yes "${tag}"
           done
 
       - name: Generate Release Notes (Docker & Supply Chain Info)
@@ -283,7 +219,6 @@ jobs:
             echo "Open an issue on [GitHub](https://github.com/${REPO}/issues)."
           } > release_notes.txt
           
-
       - name: Create GitHub release
         id: github-releasing
         uses: ncipollo/release-action@v1.16.0
