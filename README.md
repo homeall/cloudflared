@@ -1,4 +1,5 @@
 [![cloudflared](https://github.com/homeall/cloudflared/workflows/CI/badge.svg)](https://github.com/homeall/cloudflared/actions) [![pull](https://img.shields.io/docker/pulls/homeall/cloudflared)](https://img.shields.io/docker/pulls/homeall/cloudflared) [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)](#) [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#) [![Alpine Linux](https://img.shields.io/badge/Alpine%20Linux-0D597F?logo=alpinelinux&logoColor=fff)](#) [![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white)](#) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://ionut.vip)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhomeall%2Fcloudflared.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhomeall%2Fcloudflared?ref=badge_shield)
 
 # Docker image with [cloudflared](https://github.com/cloudflare/cloudflared) for *[DNS over HTTPS](https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/)*
 
@@ -36,6 +37,9 @@
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhomeall%2Fcloudflared.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhomeall%2Fcloudflared?ref=badge_large)
 
 ## About The Project
 
