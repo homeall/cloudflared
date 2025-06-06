@@ -1,4 +1,5 @@
 [![cloudflared](https://github.com/homeall/cloudflared/workflows/CI/badge.svg)](https://github.com/homeall/cloudflared/actions)
+![Trivy Workflow Status](https://github.com/homeall/cloudflared/actions/workflows/security-scan.yml/badge.svg?branch=main)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](#)
 [![Docker pulls](https://img.shields.io/docker/pulls/homeall/cloudflared)](https://img.shields.io/docker/pulls/homeall/cloudflared)
 [![Docker Image Size](https://img.shields.io/docker/image-size/homeall/cloudflared/latest)](https://hub.docker.com/r/homeall/cloudflared)
