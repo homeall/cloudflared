@@ -17,13 +17,6 @@ jobs:
       attestations: write
 
     steps:
-
-      - name: Install Cosign
-        id: install-cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v3.8.2
-        with:
-          cosign-release: 'v2.4.3'
           
       - name: Get latest cloudflared version
         id: cloudflared_version
@@ -32,12 +25,33 @@ jobs:
           echo "Latest cloudflared version is ${LATEST_VERSION}"
           echo "CLOUDFLARED_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
 
+      - name: Check if cloudflared is already built and skip if same
+        run: |
+          IMAGE="ghcr.io/${{ github.repository }}:latest"
+          LABEL=$(docker buildx imagetools inspect "$IMAGE" --format '{{ json .Annotations }}' 2>/dev/null | jq -r '.["cloudflared.version"] // empty')
+          echo "Image label: $LABEL"
+          echo "Target version: $CLOUDFLARED_VERSION"
+          if [ -n "$LABEL" ] && [ "$LABEL" = "$CLOUDFLARED_VERSION" ]; then
+             echo "Image for $CLOUDFLARED_VERSION already exists. Exiting workflow."
+             exit 0
+          fi
+          echo "No matching image found. Continuing workflow."
+        env:
+          CLOUDFLARED_VERSION: ${{ env.CLOUDFLARED_VERSION }}
+
       - name: Set Build Tag
         id: set-env
         run: |
           echo "TAG=$(date +%Y.%m.%d)" >> $GITHUB_ENV
           echo "TAG is set to $(date +%Y.%m.%d)"
-
+          
+      - name: Install Cosign
+        id: install-cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@v3.8.2
+        with:
+          cosign-release: 'v2.4.3'
+          
       - name: Docker Login
         id: docker-login
         uses: docker/login-action@v3.4.0
