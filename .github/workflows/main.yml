@@ -25,44 +25,6 @@ jobs:
           echo "Latest cloudflared version is ${LATEST_VERSION}"
           echo "CLOUDFLARED_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
 
-      - name: Check if cloudflared is already built and skip if same
-        run: |
-          IMAGE="ghcr.io/${{ github.repository }}:latest"
-          # Get index-level annotation
-          INDEX_LABEL=$(docker buildx imagetools inspect "$IMAGE" --format '{{ json .Annotations }}' 2>/dev/null | jq -r '.["cloudflared.version"] // empty')
-          # Get manifest-level annotation (for multi-arch)
-          MANIFEST_LABEL=$(docker buildx imagetools inspect "$IMAGE" --format '{{ json .Manifests }}' 2>/dev/null | jq -r '.[].Annotations["cloudflared.version"]' | grep -v null | head -n1)
-          LABEL="${INDEX_LABEL:-$MANIFEST_LABEL}"
-          echo "Image label: $LABEL"
-          echo "Target version: $CLOUDFLARED_VERSION"
-          if [ -n "$LABEL" ] && [ "$LABEL" = "$CLOUDFLARED_VERSION" ]; then
-             echo "Image for $CLOUDFLARED_VERSION already exists. Exiting workflow."
-             exit 0
-          fi
-          echo "No matching image found. Continuing workflow."
-        env:
-          CLOUDFLARED_VERSION: ${{ env.CLOUDFLARED_VERSION }}
-          
-      - name: Set Build Tag
-        id: set-env
-        run: |
-          echo "TAG=$(date +%Y.%m.%d)" >> $GITHUB_ENV
-          echo "TAG is set to $(date +%Y.%m.%d)"
-          
-      - name: Install Cosign
-        id: install-cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v3.8.2
-        with:
-          cosign-release: 'v2.4.3'
-          
-      - name: Docker Login
-        id: docker-login
-        uses: docker/login-action@v3.4.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Login to GitHub Container Registry
         id: github-login
         uses: docker/login-action@v3.4.0
@@ -71,15 +33,58 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up QEMU
-        id: setup-qemu
-        uses: docker/setup-qemu-action@v3.6.0
-
       - name: Set up Docker Buildx
         id: buildx-setup
         uses: docker/setup-buildx-action@v3.10.0
 
+      - name: Check if cloudflared is already built and skip if same
+        id: version-check
+        run: |
+          IMAGE="ghcr.io/${{ github.repository }}:latest"
+          INDEX_LABEL=$(docker buildx imagetools inspect "$IMAGE" --format '{{ json .Annotations }}' 2>/dev/null | jq -r '.["cloudflared.version"] // empty')
+          MANIFEST_LABEL=$(docker buildx imagetools inspect "$IMAGE" --format '{{ json .Manifests }}' 2>/dev/null | jq -r '.[].Annotations["cloudflared.version"]' | grep -v null | head -n1)
+          LABEL="${INDEX_LABEL:-$MANIFEST_LABEL}"
+          echo "Image label: $LABEL"
+          echo "Target version: $CLOUDFLARED_VERSION"
+          if [ -n "$LABEL" ] && [ "$LABEL" = "$CLOUDFLARED_VERSION" ]; then
+            echo "Cloudflared version already built. Skipping build."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "No matching image found. Continuing workflow."
+          fi
+        env:
+          CLOUDFLARED_VERSION: ${{ env.CLOUDFLARED_VERSION }}
+          
+      - name: Set Build Tag
+        if: steps.version-check.outputs.skip != 'true'
+        id: set-env
+        run: |
+          echo "TAG=$(date +%Y.%m.%d)" >> $GITHUB_ENV
+          echo "TAG is set to $(date +%Y.%m.%d)"
+          
+      - name: Install Cosign
+        if: steps.version-check.outputs.skip != 'true' && github.event_name != 'pull_request'
+        id: install-cosign
+        uses: sigstore/cosign-installer@v3.8.2
+        with:
+          cosign-release: 'v2.4.3'
+          
+      - name: Docker Login
+        if: steps.version-check.outputs.skip != 'true'
+        id: docker-login
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up QEMU
+        if: steps.version-check.outputs.skip != 'true'
+        id: setup-qemu
+        uses: docker/setup-qemu-action@v3.6.0
+
       - name: Extract Metadata
+        if: steps.version-check.outputs.skip != 'true'
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -91,6 +96,7 @@ jobs:
             ${{ env.TAG }}
 
       - name: Docker Bake Build and Push
+        if: steps.version-check.outputs.skip != 'true'
         id: bake
         uses: docker/bake-action@v6.8.0
         with:
@@ -104,12 +110,14 @@ jobs:
           push: true
           
       - name: Extract Digest for Attestation
+        if: steps.version-check.outputs.skip != 'true'
         id: extract_digest
         run: |
           DIGEST=$(echo '${{ steps.bake.outputs.metadata }}' | jq -r '.build["containerimage.digest"]')
           echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
       - name: Generate artifact attestation
+        if: steps.version-check.outputs.skip != 'true'
         id: artifacts
         uses: actions/attest-build-provenance@v2
         with:
@@ -118,6 +126,7 @@ jobs:
           push-to-registry: true
 
       - name: Generate artifact attestation for GHCR
+        if: steps.version-check.outputs.skip != 'true'
         id: artifacts-ghcr
         uses: actions/attest-build-provenance@v2
         with:
@@ -126,6 +135,7 @@ jobs:
           push-to-registry: true
 
       - name: Generate SBOM GHCR
+        if: steps.version-check.outputs.skip != 'true'
         uses: anchore/sbom-action@v0
         with:
           image: ghcr.io/${{ github.repository }}:latest
@@ -133,6 +143,7 @@ jobs:
           output-file: 'sbom.spdx.json'
 
       - name: Attest SBOM GHCR
+        if: steps.version-check.outputs.skip != 'true'
         uses: actions/attest-sbom@v2
         with:
           subject-name: ghcr.io/${{ github.repository }}
@@ -141,8 +152,8 @@ jobs:
           push-to-registry: true
 
       - name: Sign the Published Docker Image
+        if: steps.version-check.outputs.skip != 'true' && github.event_name != 'pull_request'
         id: sign-image
-        if: github.event_name != 'pull_request'
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           DIGEST: ${{ steps.extract_digest.outputs.digest }}
@@ -153,7 +164,7 @@ jobs:
           done
 
       - name: Generate Release Notes (Docker & Supply Chain Info)
-        if: github.event_name != 'pull_request'
+        if: steps.version-check.outputs.skip != 'true' && github.event_name != 'pull_request'
         run: |
           TAG="${{ env.TAG }}"
           REPO="${{ github.repository }}"
@@ -245,6 +256,7 @@ jobs:
           } > release_notes.txt
           
       - name: Create GitHub release
+        if: steps.version-check.outputs.skip != 'true'
         id: github-releasing
         uses: ncipollo/release-action@v1.16.0
         with:
