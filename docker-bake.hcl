@@ -27,6 +27,11 @@ target "build" {
     "type=gha,mode=max"
   ]
 
+  # Set variable for labeling image
+  variable "CLOUDFLARED_VERSION" {
+    default = "2025.5.0"
+  }
+
   # Image labels
   labels = {
     "cloudflared.version" = "${CLOUDFLARED_VERSION}"
