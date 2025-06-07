@@ -29,6 +29,7 @@ target "build" {
 
   # Image labels
   labels = {
+    "cloudflared.version" = "${CLOUDFLARED_VERSION}"
     "maintainer"           = "Homeall"
     "homeall.buymeacoffee" = "☕ Like this project? Buy me a coffee: https://www.buymeacoffee.com/homeall 😎"
     "homeall.easteregg"    = "🎉 You found the hidden label! Have a nice day. 😎"
