@@ -39,7 +39,10 @@ target "build" {
     "homeall.buymeacoffee" = "☕ Like this project? Buy me a coffee: https://www.buymeacoffee.com/homeall 😎"
     "homeall.easteregg"    = "🎉 You found the hidden label! Have a nice day. 😎"
   }
-
+  # Image annotation
+  annotations = [
+    "cloudflared.version=${CLOUDFLARED_VERSION}"
+  ]
   # Build arguments
   args = {
     "CLOUDFLARED_VERSION" = "2025.5.0"
