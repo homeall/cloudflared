@@ -1,6 +1,11 @@
 # docker-bake.hcl
 # Centralized Docker Build configuration
 
+# Set variable for labeling image
+variable "CLOUDFLARED_VERSION" {
+  default = "2025.5.0"
+}
+
 group "default" {
   targets = ["build"]
 }
@@ -26,11 +31,6 @@ target "build" {
   cache-to = [
     "type=gha,mode=max"
   ]
-
-  # Set variable for labeling image
-  variable "CLOUDFLARED_VERSION" {
-    default = "2025.5.0"
-  }
 
   # Image labels
   labels = {
