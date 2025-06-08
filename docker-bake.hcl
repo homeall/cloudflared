@@ -1,20 +1,22 @@
+# --------------------------------------------------------------------
 # docker-bake.hcl
-# Centralized Docker Build configuration
+# Centralized Docker Build configuration for multi-platform and CI/CD
+# --------------------------------------------------------------------
 
 # Set variable for labeling image
 variable "CLOUDFLARED_VERSION" {
   default = "2025.5.0"
 }
 
-# Setting default group
+# Default build group
 group "default" {
   targets = ["build"]
 }
 
-# Importing metadata from other steps
+# Target for Docker metadata action (populated by workflow)
 target "docker-metadata-action" {}
 
-# Setting building target
+# Main build target
 target "build" {
   inherits   = ["docker-metadata-action"]
   context    = "."
@@ -35,26 +37,28 @@ target "build" {
     "type=gha,mode=max"
   ]
 
-  # Image labels
+  # ---------- Image Labels ----------
   labels = {
     "cloudflared.version" = "${CLOUDFLARED_VERSION}"
     "maintainer"           = "Homeall"
     "homeall.buymeacoffee" = "☕ Like this project? Buy me a coffee: https://www.buymeacoffee.com/homeall 😎"
     "homeall.easteregg"    = "🎉 You found the hidden label! Have a nice day. 😎"
   }
-  # Image annotation
+
+  # ---------- Image Annotations (OCI manifest-level) ----------
   annotations = [
     "cloudflared.version=${CLOUDFLARED_VERSION}"
-    "maintainer"           = "Homeall"
-    "homeall.buymeacoffee" = "☕ Like this project? Buy me a coffee: https://www.buymeacoffee.com/homeall 😎"
-    "homeall.easteregg"    = "🎉 You found the hidden label! Have a nice day. 😎"
+    "maintainer=Homeall"
+    "homeall.buymeacoffee=☕ Like this project? Buy me a coffee: https://www.buymeacoffee.com/homeall 😎"
+    "homeall.easteregg=🎉 You found the hidden label! Have a nice day. 😎"
   ]
-  # Build arguments
+
+  # ----- Build arguments --------------
   args = {
     "CLOUDFLARED_VERSION" = "2025.5.0"
   }
 
-  # Build attestations: SBOM and provenance (max detail)
+ # ---------- Build Attestations ----------
   attest = [
     {
       type = "provenance"
