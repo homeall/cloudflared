@@ -6,12 +6,15 @@ variable "CLOUDFLARED_VERSION" {
   default = "2025.5.0"
 }
 
+# Setting default group
 group "default" {
   targets = ["build"]
 }
 
+# Importing metadata from other steps
 target "docker-metadata-action" {}
 
+# Setting building target
 target "build" {
   inherits   = ["docker-metadata-action"]
   context    = "."
