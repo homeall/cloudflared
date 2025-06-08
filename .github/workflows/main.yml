@@ -32,17 +32,19 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Install crane
+        uses: imjasonh/setup-crane@v0.3.0
 
       - name: Check if cloudflared is already built and skip if same
         id: version-check
         run: |
           IMAGE="ghcr.io/${{ github.repository }}:latest"
-          INDEX_LABEL=$(docker buildx imagetools inspect "$IMAGE" --format '{{ json .Annotations }}' 2>/dev/null | jq -r '.["cloudflared.version"] // empty')
-          MANIFEST_LABEL=$(docker buildx imagetools inspect "$IMAGE" --format '{{ json .Manifests }}' 2>/dev/null | jq -r '.[].Annotations["cloudflared.version"]' | grep -v null | head -n1)
-          LABEL="${INDEX_LABEL:-$MANIFEST_LABEL}"
-          echo "Image label: $LABEL"
+          # Try to fetch the version label using crane
+          BUILT_VERSION=$(crane config "$IMAGE" | jq -r '.config.Labels["cloudflared.version"] // empty')
+          echo "Built version: $BUILT_VERSION"
           echo "Target version: $CLOUDFLARED_VERSION"
-          if [ -n "$LABEL" ] && [ "$LABEL" = "$CLOUDFLARED_VERSION" ]; then
+          if [ -n "$BUILT_VERSION" ] && [ "$BUILT_VERSION" = "$CLOUDFLARED_VERSION" ]; then
             echo "Cloudflared version already built. Skipping build."
             echo "skip=true" >> $GITHUB_OUTPUT
           else
