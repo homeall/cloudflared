@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Install crane
-        uses: imjasonh/setup-crane@v0.1
+        uses: imjasonh/setup-crane@v0.4
 
       - name: Check if cloudflared is already built and skip if same
         id: version-check
