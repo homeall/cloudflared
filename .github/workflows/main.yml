@@ -260,7 +260,7 @@ jobs:
       - name: Create GitHub release
         if: steps.version-check.outputs.skip != 'true'
         id: github-releasing
-        uses: ncipollo/release-action@v1.16.0
+        uses: ncipollo/release-action@v1.18.0
         with:
           tag: ${{ env.TAG }}
           allowUpdates: true
