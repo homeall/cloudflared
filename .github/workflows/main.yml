@@ -146,7 +146,7 @@ jobs:
 
       - name: Attest SBOM GHCR
         if: steps.version-check.outputs.skip != 'true'
-        uses: actions/attest-sbom@v2
+        uses: actions/attest-sbom@v3
         with:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.extract_digest.outputs.digest }}
