@@ -68,7 +68,7 @@ jobs:
       - name: Install Cosign
         if: steps.version-check.outputs.skip != 'true' && github.event_name != 'pull_request'
         id: install-cosign
-        uses: sigstore/cosign-installer@v3.9.2
+        uses: sigstore/cosign-installer@v3.10.0
         with:
           cosign-release: 'v2.4.3'
           
