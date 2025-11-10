@@ -83,7 +83,7 @@ jobs:
       - name: Set up QEMU
         if: steps.version-check.outputs.skip != 'true'
         id: setup-qemu
-        uses: docker/setup-qemu-action@v3.6.0
+        uses: docker/setup-qemu-action@v3.7.0
 
       - name: Extract Metadata
         if: steps.version-check.outputs.skip != 'true'
