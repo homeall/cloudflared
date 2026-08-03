@@ -21,7 +21,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # --- Runtime Stage ---
-FROM gcr.io/distroless/static-debian12:nonroot
+FROM gcr.io/distroless/static-debian13:nonroot
 
 COPY --from=downloader /cloudflared /usr/local/bin/cloudflared
 COPY --from=downloader /usr/bin/nslookup /usr/bin/nslookup
